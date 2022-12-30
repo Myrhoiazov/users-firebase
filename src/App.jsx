@@ -7,7 +7,7 @@ import Headers from './components/Headers';
 export const App = () => {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename="/users-firebase">
         <Headers />
         <ClientRoutes />
       </BrowserRouter>
