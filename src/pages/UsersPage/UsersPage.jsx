@@ -17,7 +17,7 @@ import s from './usersPage.module.scss';
 
 const UsersPage = () => {
   const [userList, setUserList] = useState([]);
-  console.log("userList: ", userList);
+  console.log('userList: ', userList);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const fetchPost = async () => {
@@ -127,16 +127,3 @@ const UsersPage = () => {
 
 export default UsersPage;
 
-{
-  /* <Avatar
-  alt="Remy Sharp"
-  src="/static/images/avatar/1.jpg"
-  sx={{ width: 24, height: 24 }}
-/>
-<Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-<Avatar
-  alt="Remy Sharp"
-  src="/static/images/avatar/1.jpg"
-  sx={{ width: 56, height: 56 }}
-/> */
-}
