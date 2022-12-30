@@ -92,7 +92,18 @@ const FormPage = () => {
 
   return (
     <div className={s.wrapper}>
-      <Typography variant="h5">Add Users</Typography>
+      <Typography
+        variant="h5"
+        sx={{
+          backgroundColor: 'rgb(25, 118, 210)',
+          p: 1,
+          pl: 5,
+          pr: 5,
+          color: 'white',
+        }}
+      >
+        Add User
+      </Typography>
       <Backdrop
         open={isLoading}
         sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 3 }}
