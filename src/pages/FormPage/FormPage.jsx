@@ -1,34 +1,35 @@
-import { Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import {
-  FormControl,
   FormHelperText,
-  Input,
-  InputLabel,
   TextField,
   Typography,
   Button,
   Backdrop,
   CircularProgress,
 } from '@mui/material';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 import { db } from '../../db';
 import schema from 'utils/validationUser';
 import s from './cartPage.module.scss';
 
-const CartPage = () => {
-  const initialValues = {
-    name: '',
-    secondName: '',
-    email: '',
-    tel: '',
-    birthYear: '',
-    avatar: null,
-  };
+const emailRegexp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+const telRegexp = /(?=.*\+[0-9]{3}\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{4,5}$)/;
 
+const initialValues = {
+  name: '',
+  secondName: '',
+  email: '',
+  tel: '',
+  birthYear: '',
+  avatar: null,
+};
+
+const FormPage = () => {
   const [user, setUser] = useState(initialValues);
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [emailRequared, setEmailRequared] = useState(false);
+  const [telRequared, setTelRequared] = useState(false);
 
   const handleChangeUser = ev => {
     const { name, value } = ev.target;
@@ -37,6 +38,27 @@ const CartPage = () => {
 
   const validateForm = e => {
     e.preventDefault();
+    setTelRequared(false);
+    setEmailRequared(false);
+
+    if (user.name === '' || user.surname === '' || user.birthYear === '') {
+      toast.error('Не корректно задано поле');
+      return;
+    }
+
+    if (!emailRegexp.test(user.email)) {
+      setEmailRequared(true);
+      return false;
+    }
+
+    if (user.email.length < 3 || user.email.length > 254) {
+      return;
+    }
+
+    if (!telRegexp.test(user.tel)) {
+      setTelRequared(true);
+      return false;
+    }
 
     const validationResult = schema.validate(user);
 
@@ -45,9 +67,8 @@ const CartPage = () => {
       return false;
     }
 
-    return true
+    return true;
   };
-
 
   const addUser = async e => {
     const resultValidate = validateForm(e);
@@ -57,30 +78,29 @@ const CartPage = () => {
     }
 
     try {
-      setIsOpenModal(true)
+      setIsLoading(true);
       await addDoc(collection(db, 'users'), {
         todo: user,
       });
-      setIsOpenModal(false)
+      setIsLoading(false);
       toast.success(`${user.name} успішно додано`);
-      setUser(initialValues)
+      setUser(initialValues);
     } catch (e) {
       toast.error('Щось пішло не так спробуй ще раз');
     }
   };
 
-
   return (
     <div className={s.wrapper}>
       <Typography variant="h5">Add Users</Typography>
       <Backdrop
-        open={isOpenModal}
+        open={isLoading}
         sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 3 }}
       >
         <CircularProgress color="grey" />
       </Backdrop>
       <div className={s.form}>
-        <form onSubmit={(e)=>addUser(e)}>
+        <form onSubmit={e => addUser(e)}>
           <div className={s.input}>
             <TextField
               label="ім'я"
@@ -108,6 +128,7 @@ const CartPage = () => {
           <div className={s.input}>
             <TextField
               label="email"
+              error={emailRequared}
               type="email"
               name="email"
               value={user.email}
@@ -116,11 +137,17 @@ const CartPage = () => {
               size="small"
               required
             />
+            {emailRequared ? (
+              <FormHelperText id="my-helper-text" className={s.error}>
+                Please enter correct.
+              </FormHelperText>
+            ) : null}
           </div>
           <div className={s.input}>
             <TextField
               label="телефон"
               placeholder="+380 (XX) XXX-XX-XX)"
+              error={telRequared}
               type="tel"
               name="tel"
               value={user.tel}
@@ -129,6 +156,11 @@ const CartPage = () => {
               size="small"
               required
             />
+            {telRequared ? (
+              <FormHelperText id="my-helper-text" className={s.error}>
+                Please enter correct.
+              </FormHelperText>
+            ) : null}
           </div>
           <div className={s.input}>
             <TextField
@@ -138,17 +170,21 @@ const CartPage = () => {
               onChange={handleChangeUser}
               fullWidth
               size="small"
+              required
             />
           </div>
           <div className={s.input}>
             <TextField
               type="file"
+              onChange={handleChangeUser}
               name="avatar"
               value={user.surName}
-              onChange={handleChangeUser}
               fullWidth
               size="small"
             />
+            <FormHelperText id="my-helper-text">
+              Не обов'язкове поле
+            </FormHelperText>
           </div>
           <Button type="submit" variant="contained" fullWidth>
             Submit
@@ -159,4 +195,4 @@ const CartPage = () => {
   );
 };
 
-export default CartPage;
+export default FormPage;

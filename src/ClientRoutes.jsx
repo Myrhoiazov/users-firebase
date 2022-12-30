@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { lazy } from 'react';
 import { Suspense } from 'react';
 
-const CartPage = lazy(() => import('./pages/CartPage'));
+const CartPage = lazy(() => import('./pages/FormPage'));
 const UsersPage = lazy(() => import('./pages/UsersPage'));
 
 const ClientRoutes = () => {

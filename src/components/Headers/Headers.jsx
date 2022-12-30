@@ -2,12 +2,12 @@ import React from 'react';
 
 import { NavLink } from 'react-router-dom';
 import headerMenu from './header-menu';
-import { AppBar, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import s from './headers.module.scss';
 
 export const Headers = () => {
   const elements = headerMenu.map(({ name, to }) => (
-    <NavLink key={name} to={to} end>
+    <NavLink className={s.link} key={name} to={to} end>
       {name}
     </NavLink>
   ));
@@ -15,18 +15,10 @@ export const Headers = () => {
   return (
     <>
       <AppBar className={s.links}>
-        <Toolbar>
+        <Toolbar sx={{ display: 'flex', alignItems: 'center'  }}>
           <Typography variant="h4">Test App</Typography>
-          {/* <Menu
-            sx={{
-              display: { xs: 'block', md: 'none' },
-            }}
-          >
-            <MenuItem key="1">
-              <Typography textAlign="center">Page</Typography>
-            </MenuItem>
-          </Menu> */}
-          {elements}
+
+          <Box sx={{ marginLeft: 'auto',  }}>{elements}</Box>
         </Toolbar>
       </AppBar>
     </>
