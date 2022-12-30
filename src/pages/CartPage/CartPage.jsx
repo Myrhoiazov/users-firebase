@@ -8,6 +8,8 @@ import {
   TextField,
   Typography,
   Button,
+  Backdrop,
+  CircularProgress,
 } from '@mui/material';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { toast } from 'react-toastify';
@@ -26,6 +28,7 @@ const CartPage = () => {
   };
 
   const [user, setUser] = useState(initialValues);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleChangeUser = ev => {
     const { name, value } = ev.target;
@@ -54,9 +57,11 @@ const CartPage = () => {
     }
 
     try {
+      setIsOpenModal(true)
       await addDoc(collection(db, 'users'), {
         todo: user,
       });
+      setIsOpenModal(false)
       toast.success(`${user.name} успішно додано`);
       setUser(initialValues)
     } catch (e) {
@@ -68,6 +73,12 @@ const CartPage = () => {
   return (
     <div className={s.wrapper}>
       <Typography variant="h5">Add Users</Typography>
+      <Backdrop
+        open={isOpenModal}
+        sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 3 }}
+      >
+        <CircularProgress color="grey" />
+      </Backdrop>
       <div className={s.form}>
         <form onSubmit={(e)=>addUser(e)}>
           <div className={s.input}>

@@ -15,6 +15,7 @@ import s from './usersPage.module.scss';
 
 const UsersPage = () => {
   const [userList, setUserList] = useState([]);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const fetchPost = async () => {
     try {
@@ -35,16 +36,18 @@ const UsersPage = () => {
   }, []);
 
   if (!userList) {
-    return <>
-    <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-    >
-      <CircularProgress color="inherit" />
-    </Backdrop>
-    </>;
+    return setIsOpenModal(true);
   }
 
   return (
-    <Container >
+    <Container>
+      <Backdrop
+        open={isOpenModal}
+        sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 3 }}
+      >
+        <CircularProgress color="grey" />
+      </Backdrop>
+
       <Typography>Users list</Typography>
       <div className={s.userItems}>
         {userList?.map(({ todo, id }, i) => (
