@@ -1,0 +1,11 @@
+.links {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.active {
+  background-color: teal;
+  color: #fff;
+}
