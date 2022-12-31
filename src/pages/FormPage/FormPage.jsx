@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   FormHelperText,
   TextField,
@@ -8,8 +8,9 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { collection, addDoc } from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { toast } from 'react-toastify';
-import { db } from '../../db';
+import { db, storage } from '../../db';
 import schema from 'utils/validationUser';
 import s from './cartPage.module.scss';
 
@@ -28,8 +29,29 @@ const initialValues = {
 const FormPage = () => {
   const [user, setUser] = useState(initialValues);
   const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState(null);
   const [emailRequared, setEmailRequared] = useState(false);
   const [telRequared, setTelRequared] = useState(false);
+
+  useEffect(() => {
+
+    function handleUpload() {
+
+      const storageRef = ref(storage, `/files/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        'state_changed',
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(url => {
+            setUser(prev=>({...prev, avatar: url}));
+          });
+        }
+      );
+    }
+
+    file && handleUpload()
+  }, [file]);
 
   const handleChangeUser = ev => {
     const { name, value } = ev.target;
@@ -85,6 +107,7 @@ const FormPage = () => {
       setIsLoading(false);
       toast.success(`${user.name} успішно додано`);
       setUser(initialValues);
+      setFile(null)
     } catch (e) {
       toast.error('Щось пішло не так спробуй ще раз');
     }
@@ -187,7 +210,7 @@ const FormPage = () => {
           <div className={s.input}>
             <TextField
               type="file"
-              onChange={handleChangeUser}
+              onChange={e => setFile(e.target.files[0])}
               name="avatar"
               value={user.surName}
               fullWidth

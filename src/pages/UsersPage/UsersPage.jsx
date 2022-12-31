@@ -67,18 +67,24 @@ const UsersPage = () => {
         {userList?.map(({ todo, id }, i) => (
           <Card sx={{ minWidth: 300 }} key={id}>
             <CardActionArea>
-              <Avatar
-                alt={todo.name}
-                src={todo.avatar}
-                sx={{ width: 56, height: 56 }}
-              />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {todo.name}
-                </Typography>
-                <Typography gutterBottom variant="h5" component="div">
-                  {todo.secondName}
-                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Avatar
+                    alt={todo.name}
+                    src={todo.avatar}
+                    sx={{
+                      width: 56,
+                      height: 56,
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      marginRight: '10px'
+                    }}
+                  />
+                  <Typography gutterBottom variant="h5" component="div">
+                    {todo.name} {todo.secondName}
+                  </Typography>{' '}
+                </Box>
+
                 <Box sx={{ display: 'flex' }}>
                   <Typography
                     sx={{ mr: 2, fontWeight: '700' }}
@@ -126,4 +132,3 @@ const UsersPage = () => {
 };
 
 export default UsersPage;
-
