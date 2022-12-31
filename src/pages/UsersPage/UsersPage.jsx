@@ -13,11 +13,10 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../db';
 import { Container } from '@mui/system';
-import s from './usersPage.module.scss';
+import { deepOrange } from '@mui/material/colors';
 
 const UsersPage = () => {
   const [userList, setUserList] = useState([]);
-  console.log('userList: ', userList);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const fetchPost = async () => {
@@ -42,7 +41,20 @@ const UsersPage = () => {
   }, []);
 
   if (!userList) {
-    return <Typography>User not found</Typography>;
+    return (
+      <Container
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
+          paddingTop: '300px'
+
+        }}
+      >
+        <Typography>User not found</Typography>
+      </Container>
+    );
   }
 
   return (
@@ -56,14 +68,21 @@ const UsersPage = () => {
         paddingTop: '200px',
       }}
     >
-      {userList.length <= 0 && <Typography>User not found</Typography>}
+      {userList.length === 0 && <Typography>User not found</Typography>}
       <Backdrop
         open={isOpenModal}
         sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 3 }}
       >
         <CircularProgress color="grey" />
       </Backdrop>
-      <Box className={s.userItems}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          gap: 2,
+        }}
+      >
         {userList?.map(({ todo, id }, i) => (
           <Card sx={{ minWidth: 300 }} key={id}>
             <CardActionArea>
@@ -77,12 +96,15 @@ const UsersPage = () => {
                       height: 56,
                       objectFit: 'cover',
                       objectPosition: 'center',
-                      marginRight: '10px'
+                      marginRight: '10px',
+                      bgcolor: deepOrange[500],
                     }}
-                  />
+                  >
+                    {todo.name[0]}
+                  </Avatar>
                   <Typography gutterBottom variant="h5" component="div">
                     {todo.name} {todo.secondName}
-                  </Typography>{' '}
+                  </Typography>
                 </Box>
 
                 <Box sx={{ display: 'flex' }}>
@@ -104,7 +126,7 @@ const UsersPage = () => {
                     variant="body2"
                     color="text.secondary"
                   >
-                    День народження:{' '}
+                    День народження:
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {todo.birthYear}

@@ -6,6 +6,7 @@ import {
   Button,
   Backdrop,
   CircularProgress,
+  Box,
 } from '@mui/material';
 import { collection, addDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
@@ -34,23 +35,18 @@ const FormPage = () => {
   const [telRequared, setTelRequared] = useState(false);
 
   useEffect(() => {
-
     function handleUpload() {
-
       const storageRef = ref(storage, `/files/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
-      uploadTask.on(
-        'state_changed',
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(url => {
-            setUser(prev=>({...prev, avatar: url}));
-          });
-        }
-      );
+      uploadTask.on('state_changed', () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(url => {
+          setUser(prev => ({ ...prev, avatar: url }));
+        });
+      });
     }
 
-    file && handleUpload()
+    file && handleUpload();
   }, [file]);
 
   const handleChangeUser = ev => {
@@ -107,7 +103,8 @@ const FormPage = () => {
       setIsLoading(false);
       toast.success(`${user.name} успішно додано`);
       setUser(initialValues);
-      setFile(null)
+      setFile(null);
+      e.target.reset()
     } catch (e) {
       toast.error('Щось пішло не так спробуй ще раз');
     }
@@ -135,7 +132,7 @@ const FormPage = () => {
       </Backdrop>
       <div className={s.form}>
         <form onSubmit={e => addUser(e)}>
-          <div className={s.input}>
+          <Box sx={{ mb: 3 }}>
             <TextField
               label="ім'я"
               type="text"
@@ -146,8 +143,8 @@ const FormPage = () => {
               size="small"
               required
             />
-          </div>
-          <div className={s.input}>
+          </Box>
+          <Box sx={{ mb: 3 }}>
             <TextField
               label="прізвище"
               type="text"
@@ -158,8 +155,8 @@ const FormPage = () => {
               size="small"
               required
             />
-          </div>
-          <div className={s.input}>
+          </Box>
+          <Box sx={{ mb: 3 }}>
             <TextField
               label="email"
               error={emailRequared}
@@ -176,8 +173,8 @@ const FormPage = () => {
                 Please enter correct.
               </FormHelperText>
             ) : null}
-          </div>
-          <div className={s.input}>
+          </Box>
+          <Box sx={{ mb: 3 }}>
             <TextField
               label="телефон"
               placeholder="+380 (XX) XXX-XX-XX)"
@@ -195,8 +192,8 @@ const FormPage = () => {
                 Please enter correct.
               </FormHelperText>
             ) : null}
-          </div>
-          <div className={s.input}>
+          </Box>
+          <Box sx={{ mb: 3 }}>
             <TextField
               type="date"
               name="birthYear"
@@ -206,20 +203,18 @@ const FormPage = () => {
               size="small"
               required
             />
-          </div>
-          <div className={s.input}>
+          </Box>
+          <Box sx={{ mb: 3 }}>
             <TextField
               type="file"
               onChange={e => setFile(e.target.files[0])}
-              name="avatar"
-              value={user.surName}
               fullWidth
               size="small"
             />
             <FormHelperText id="my-helper-text">
               Не обов'язкове поле
             </FormHelperText>
-          </div>
+          </Box>
           <Button type="submit" variant="contained" fullWidth>
             Submit
           </Button>
