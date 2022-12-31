@@ -2,12 +2,12 @@ import { BrowserRouter } from 'react-router-dom';
 import ClientRoutes from 'ClientRoutes';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Headers from './components/Headers';
+import Header from './components/Header';
 
 export const App = () => {
   return (
-    <BrowserRouter>
-      <Headers />
+    <BrowserRouter basename="users-firebase">
+      <Header />
       <ClientRoutes />
       <ToastContainer />
     </BrowserRouter>

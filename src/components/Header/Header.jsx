@@ -3,9 +3,9 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import headerMenu from './header-menu';
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
-import s from './headers.module.scss';
+import s from './header.module.scss';
 
-export const Headers = () => {
+export const Header = () => {
   const elements = headerMenu.map(({ name, to }) => (
     <NavLink className={s.link} key={name} to={to} end>
       {name}
@@ -25,6 +25,4 @@ export const Headers = () => {
   );
 };
 
-// Headers.propTypes = {};
-
-export default Headers;
+export default Header;
