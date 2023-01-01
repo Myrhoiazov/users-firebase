@@ -8,7 +8,7 @@ const UsersPage = lazy(() => import('./pages/UsersPage'));
 
 const ClientRoutes = () => {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<h3>Loading...</h3>}>
       <Routes>
         <Route path="/" element={<CartPage />} />
         <Route path="/users" element={<UsersPage />} />
