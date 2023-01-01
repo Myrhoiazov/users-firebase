@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/users-firebase/static/css/main.e9762f20.css",
+    "main.js": "/users-firebase/static/js/main.26bdcb79.js",
+    "static/css/356.640a2571.chunk.css": "/users-firebase/static/css/356.640a2571.chunk.css",
+    "static/js/356.5a830ce4.chunk.js": "/users-firebase/static/js/356.5a830ce4.chunk.js",
+    "static/js/538.74a26322.chunk.js": "/users-firebase/static/js/538.74a26322.chunk.js",
+    "static/js/936.8c280d7c.chunk.js": "/users-firebase/static/js/936.8c280d7c.chunk.js",
+    "static/js/350.cbc780cd.chunk.js": "/users-firebase/static/js/350.cbc780cd.chunk.js",
+    "index.html": "/users-firebase/index.html",
+    "main.e9762f20.css.map": "/users-firebase/static/css/main.e9762f20.css.map",
+    "main.26bdcb79.js.map": "/users-firebase/static/js/main.26bdcb79.js.map",
+    "356.640a2571.chunk.css.map": "/users-firebase/static/css/356.640a2571.chunk.css.map",
+    "356.5a830ce4.chunk.js.map": "/users-firebase/static/js/356.5a830ce4.chunk.js.map",
+    "538.74a26322.chunk.js.map": "/users-firebase/static/js/538.74a26322.chunk.js.map",
+    "936.8c280d7c.chunk.js.map": "/users-firebase/static/js/936.8c280d7c.chunk.js.map",
+    "350.cbc780cd.chunk.js.map": "/users-firebase/static/js/350.cbc780cd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e9762f20.css",
+    "static/js/main.26bdcb79.js"
+  ]
+}
