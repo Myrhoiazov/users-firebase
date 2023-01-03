@@ -14,33 +14,32 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../db';
 import { Container } from '@mui/system';
 import { deepOrange } from '@mui/material/colors';
+import { toast } from 'react-toastify';
 
 const UsersPage = () => {
   const [userList, setUserList] = useState([]);
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const fetchPost = async () => {
+  const fetchUsers = async () => {
     try {
-      setIsOpenModal(true);
-
-      await getDocs(collection(db, 'users')).then(querySnapshot => {
-        const newData = querySnapshot.docs.map(doc => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setUserList(newData);
-        setIsOpenModal(false);
-      });
+      setIsLoading(true);
+      const querySnapshot = await getDocs(collection(db, 'users'));
+      const users = querySnapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setUserList(users);
+      setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
   useEffect(() => {
-    fetchPost();
+    fetchUsers();
   }, []);
 
-  if (!userList) {
+  if (!userList.length) {
     return (
       <Container
         sx={{
@@ -48,8 +47,7 @@ const UsersPage = () => {
           alignItems: 'center',
           justifyContent: 'center',
           height: '100vh',
-          paddingTop: '300px'
-
+          paddingTop: '300px',
         }}
       >
         <Typography>User not found</Typography>
@@ -68,9 +66,9 @@ const UsersPage = () => {
         paddingTop: '200px',
       }}
     >
-      {userList.length === 0 && <Typography>User not found</Typography>}
+      {!userList.length && <Typography>User not found</Typography>}
       <Backdrop
-        open={isOpenModal}
+        open={isLoading}
         sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 3 }}
       >
         <CircularProgress color="grey" />
@@ -83,14 +81,14 @@ const UsersPage = () => {
           gap: 2,
         }}
       >
-        {userList?.map(({ todo, id }, i) => (
+        {userList?.map(({ user, id }, i) => (
           <Card sx={{ minWidth: 300 }} key={id}>
             <CardActionArea>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                   <Avatar
-                    alt={todo.name}
-                    src={todo.avatar}
+                    alt={user.name}
+                    src={user.avatar}
                     sx={{
                       width: 56,
                       height: 56,
@@ -100,10 +98,10 @@ const UsersPage = () => {
                       bgcolor: deepOrange[500],
                     }}
                   >
-                    {todo.name[0]}
+                    {user.name[0]}
                   </Avatar>
                   <Typography gutterBottom variant="h5" component="div">
-                    {todo.name} {todo.secondName}
+                    {user.name} {user.secondName}
                   </Typography>
                 </Box>
 
@@ -116,7 +114,7 @@ const UsersPage = () => {
                     Email:
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {todo.email}
+                    {user.email}
                   </Typography>
                 </Box>
 
@@ -129,7 +127,7 @@ const UsersPage = () => {
                     День народження:
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {todo.birthYear}
+                    {user.birthYear}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex' }}>
@@ -141,7 +139,7 @@ const UsersPage = () => {
                     Телефон:
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {todo.tel}
+                    {user.tel}
                   </Typography>
                 </Box>
               </CardContent>

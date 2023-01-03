@@ -31,41 +31,26 @@ const FormPage = () => {
   const [user, setUser] = useState(initialValues);
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(null);
-  const [emailRequared, setEmailRequared] = useState(false);
-  const [telRequared, setTelRequared] = useState(false);
-
-  useEffect(() => {
-    function handleUpload() {
-      const storageRef = ref(storage, `/files/${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on('state_changed', () => {
-        getDownloadURL(uploadTask.snapshot.ref).then(url => {
-          setUser(prev => ({ ...prev, avatar: url }));
-        });
-      });
-    }
-
-    file && handleUpload();
-  }, [file]);
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isTelValid, setIsTelValid] = useState(false);
 
   const handleChangeUser = ev => {
     const { name, value } = ev.target;
-    setUser(prev => ({ ...prev, [name]: value }));
+    setUser(prev => ({ ...prev, [name]: value}));
   };
 
   const validateForm = e => {
     e.preventDefault();
-    setTelRequared(false);
-    setEmailRequared(false);
+    setIsTelValid(false);
+    setIsEmailValid(false);
 
-    if (user.name === '' || user.surname === '' || user.birthYear === '') {
-      toast.error('Не корректно задано поле');
+    if (user.name.trim() === '' || user.secondName.trim() === '' || user.birthYear === '') {
+      toast.error('Заповніть всі поля');
       return;
     }
 
     if (!emailRegexp.test(user.email)) {
-      setEmailRequared(true);
+      setIsEmailValid(true);
       return false;
     }
 
@@ -74,7 +59,7 @@ const FormPage = () => {
     }
 
     if (!telRegexp.test(user.tel)) {
-      setTelRequared(true);
+      setIsTelValid(true);
       return false;
     }
 
@@ -98,17 +83,32 @@ const FormPage = () => {
     try {
       setIsLoading(true);
       await addDoc(collection(db, 'users'), {
-        todo: user,
+        user,
       });
       setIsLoading(false);
       toast.success(`${user.name} успішно додано`);
       setUser(initialValues);
       setFile(null);
-      e.target.reset()
+      e.target.reset();
     } catch (e) {
       toast.error('Щось пішло не так спробуй ще раз');
     }
   };
+
+  useEffect(() => {
+    function handleUpload() {
+      const storageRef = ref(storage, `/files/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on('state_changed', () => {
+        getDownloadURL(uploadTask.snapshot.ref).then(url => {
+          setUser(prev => ({ ...prev, avatar: url }));
+        });
+      });
+    }
+
+    file && handleUpload();
+  }, [file]);
 
   return (
     <div className={s.wrapper}>
@@ -130,7 +130,7 @@ const FormPage = () => {
       >
         <CircularProgress color="grey" />
       </Backdrop>
-      <div className={s.form}>
+      <Box className={s.form}>
         <form onSubmit={e => addUser(e)}>
           <Box sx={{ mb: 3 }}>
             <TextField
@@ -140,7 +140,7 @@ const FormPage = () => {
               value={user.name}
               onChange={handleChangeUser}
               fullWidth
-              size="small"
+              size="medium"
               required
             />
           </Box>
@@ -152,23 +152,23 @@ const FormPage = () => {
               value={user.secondName}
               onChange={handleChangeUser}
               fullWidth
-              size="small"
+              size="medium"
               required
             />
           </Box>
           <Box sx={{ mb: 3 }}>
             <TextField
               label="email"
-              error={emailRequared}
+              error={isEmailValid}
               type="email"
               name="email"
               value={user.email}
               onChange={handleChangeUser}
               fullWidth
-              size="small"
+              size="medium"
               required
             />
-            {emailRequared ? (
+            {isEmailValid ? (
               <FormHelperText id="my-helper-text" className={s.error}>
                 Please enter correct.
               </FormHelperText>
@@ -178,16 +178,16 @@ const FormPage = () => {
             <TextField
               label="телефон"
               placeholder="+380 (XX) XXX-XX-XX)"
-              error={telRequared}
+              error={isTelValid}
               type="tel"
               name="tel"
               value={user.tel}
               onChange={handleChangeUser}
               fullWidth
-              size="small"
+              size="medium"
               required
             />
-            {telRequared ? (
+            {isTelValid ? (
               <FormHelperText id="my-helper-text" className={s.error}>
                 Please enter correct.
               </FormHelperText>
@@ -195,31 +195,35 @@ const FormPage = () => {
           </Box>
           <Box sx={{ mb: 3 }}>
             <TextField
+              label="дата народження"
               type="date"
               name="birthYear"
               value={user.birthYear}
+              InputLabelProps={{ shrink: true }}
               onChange={handleChangeUser}
               fullWidth
-              size="small"
+              size="medium"
               required
             />
           </Box>
           <Box sx={{ mb: 3 }}>
             <TextField
+              label="фото профелю"
               type="file"
+              InputLabelProps={{ shrink: true }}
               onChange={e => setFile(e.target.files[0])}
               fullWidth
-              size="small"
+              size="medium"
             />
             <FormHelperText id="my-helper-text">
               Не обов'язкове поле
             </FormHelperText>
           </Box>
           <Button type="submit" variant="contained" fullWidth>
-            Submit
+            надіслати
           </Button>
         </form>
-      </div>
+      </Box>
     </div>
   );
 };
