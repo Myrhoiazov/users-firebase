@@ -31,6 +31,7 @@ const FormPage = () => {
   const [user, setUser] = useState(initialValues);
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(null);
+  // const [isError, setIsError] = useState({})
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isTelValid, setIsTelValid] = useState(false);
 

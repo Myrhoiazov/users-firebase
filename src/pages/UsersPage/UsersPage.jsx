@@ -40,14 +40,12 @@ const UsersPage = () => {
   }, []);
 
   if (!userList.length) {
-    return (
-      <Container
+    return ( <Container
         sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           height: '100vh',
-          paddingTop: '300px',
         }}
       >
         <Typography>User not found</Typography>
@@ -66,7 +64,6 @@ const UsersPage = () => {
         paddingTop: '200px',
       }}
     >
-      {!userList.length && <Typography>User not found</Typography>}
       <Backdrop
         open={isLoading}
         sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 3 }}
