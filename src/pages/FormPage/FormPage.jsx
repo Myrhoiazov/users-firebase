@@ -11,12 +11,13 @@ import {
 import { collection, addDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { toast } from 'react-toastify';
-import { db, storage } from '../../db';
+import { db, storage } from '../../firebaseConfigm';
 import schema from 'utils/validationUser';
 import s from './cartPage.module.scss';
 
 const emailRegexp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 const telRegexp = /(?=.*\+[0-9]{3}\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{4,5}$)/;
+const USER_STORAGE = 'user';
 
 const initialValues = {
   name: '',
@@ -31,42 +32,42 @@ const FormPage = () => {
   const [user, setUser] = useState(initialValues);
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(null);
-  // const [isError, setIsError] = useState({})
-  const [isEmailValid, setIsEmailValid] = useState(false);
-  const [isTelValid, setIsTelValid] = useState(false);
+  const [errors, setIsErrors] = useState({});
 
   const handleChangeUser = ev => {
     const { name, value } = ev.target;
-    setUser(prev => ({ ...prev, [name]: value}));
+    setUser(prev => ({ ...prev, [name]: value }));
+    localStorage.setItem(USER_STORAGE, JSON.stringify({...user, [name]: value}));
   };
 
   const validateForm = e => {
     e.preventDefault();
-    setIsTelValid(false);
-    setIsEmailValid(false);
+    setIsErrors({});
 
-    if (user.name.trim() === '' || user.secondName.trim() === '' || user.birthYear === '') {
+    if (
+      user.name.trim() === '' ||
+      user.secondName.trim() === '' ||
+      user.birthYear === ''
+    ) {
       toast.error('Заповніть всі поля');
       return;
     }
 
     if (!emailRegexp.test(user.email)) {
-      setIsEmailValid(true);
-      return false;
+      setIsErrors(prev => ({ ...prev, email: 'error' }));
     }
 
     if (user.email.length < 3 || user.email.length > 254) {
-      return;
+      setIsErrors(prev => ({ ...prev, email: 'error' }));
     }
 
     if (!telRegexp.test(user.tel)) {
-      setIsTelValid(true);
-      return false;
+      setIsErrors(prev => ({ ...prev, tel: 'error' }));
     }
 
     const validationResult = schema.validate(user);
 
-    if (validationResult.error) {
+    if (validationResult.error || Object.keys(errors).length) {
       toast.error('Не корректно задано поле');
       return false;
     }
@@ -91,12 +92,19 @@ const FormPage = () => {
       setUser(initialValues);
       setFile(null);
       e.target.reset();
+      localStorage.removeItem(USER_STORAGE);
     } catch (e) {
       toast.error('Щось пішло не так спробуй ще раз');
     }
   };
 
   useEffect(() => {
+    const localData = JSON.parse(localStorage.getItem(USER_STORAGE));
+
+    if (localData) {
+      setUser(localData);
+    }
+
     function handleUpload() {
       const storageRef = ref(storage, `/files/${file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
@@ -141,7 +149,7 @@ const FormPage = () => {
               value={user.name}
               onChange={handleChangeUser}
               fullWidth
-              size="medium"
+              size="small"
               required
             />
           </Box>
@@ -153,25 +161,25 @@ const FormPage = () => {
               value={user.secondName}
               onChange={handleChangeUser}
               fullWidth
-              size="medium"
+              size="small"
               required
             />
           </Box>
           <Box sx={{ mb: 3 }}>
             <TextField
               label="email"
-              error={isEmailValid}
+              error={errors.email ? true : false}
               type="email"
               name="email"
               value={user.email}
               onChange={handleChangeUser}
               fullWidth
-              size="medium"
+              size="small"
               required
             />
-            {isEmailValid ? (
+            {errors.email ? (
               <FormHelperText id="my-helper-text" className={s.error}>
-                Please enter correct.
+                Не корректно задане поле
               </FormHelperText>
             ) : null}
           </Box>
@@ -179,18 +187,18 @@ const FormPage = () => {
             <TextField
               label="телефон"
               placeholder="+380 (XX) XXX-XX-XX)"
-              error={isTelValid}
+              error={errors.tel ? true : false}
               type="tel"
               name="tel"
               value={user.tel}
               onChange={handleChangeUser}
               fullWidth
-              size="medium"
+              size="small"
               required
             />
-            {isTelValid ? (
+            {errors.tel ? (
               <FormHelperText id="my-helper-text" className={s.error}>
-                Please enter correct.
+                Не корректно задане поле
               </FormHelperText>
             ) : null}
           </Box>

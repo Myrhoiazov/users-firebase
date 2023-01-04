@@ -11,7 +11,7 @@ import {
 
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../db';
+import { db } from '../../firebaseConfigm';
 import { Container } from '@mui/system';
 import { deepOrange } from '@mui/material/colors';
 import { toast } from 'react-toastify';
@@ -40,7 +40,8 @@ const UsersPage = () => {
   }, []);
 
   if (!userList.length) {
-    return ( <Container
+    return (
+      <Container
         sx={{
           display: 'flex',
           alignItems: 'center',
