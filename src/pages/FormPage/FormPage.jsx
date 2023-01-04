@@ -37,11 +37,15 @@ const FormPage = () => {
   const handleChangeUser = ev => {
     const { name, value } = ev.target;
     setUser(prev => ({ ...prev, [name]: value }));
-    localStorage.setItem(USER_STORAGE, JSON.stringify({...user, [name]: value}));
+    localStorage.setItem(
+      USER_STORAGE,
+      JSON.stringify({ ...user, [name]: value })
+    );
   };
 
   const validateForm = e => {
     e.preventDefault();
+
     setIsErrors({});
 
     if (
@@ -89,13 +93,17 @@ const FormPage = () => {
       });
       setIsLoading(false);
       toast.success(`${user.name} успішно додано`);
-      setUser(initialValues);
-      setFile(null);
+      resetForm();
       e.target.reset();
-      localStorage.removeItem(USER_STORAGE);
     } catch (e) {
       toast.error('Щось пішло не так спробуй ще раз');
     }
+  };
+
+  const resetForm = e => {
+    setUser(initialValues);
+    setFile(null);
+    localStorage.removeItem(USER_STORAGE);
   };
 
   useEffect(() => {
@@ -117,7 +125,7 @@ const FormPage = () => {
     }
 
     file && handleUpload();
-  }, [file]);
+  }, [file, errors]);
 
   return (
     <div className={s.wrapper}>
@@ -228,9 +236,20 @@ const FormPage = () => {
               Не обов'язкове поле
             </FormHelperText>
           </Box>
-          <Button type="submit" variant="contained" fullWidth>
-            надіслати
-          </Button>
+          <Box sx={{display: 'flex', justifyContent: 'center', minHeight: '45px'}}>
+            <Button
+              type="reset"
+              value="reset"
+              variant="contained"
+              fullWidth
+              onClick={e => resetForm(e)}
+            >
+              збросити
+            </Button>
+            <Button type="submit" variant="contained" fullWidth sx={{ml: 2}}>
+              надіслати
+            </Button>
+          </Box>
         </form>
       </Box>
     </div>
