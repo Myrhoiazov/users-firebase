@@ -1,8 +1,8 @@
 import Joi from 'joi';
 
 const schema = Joi.object({
-  name: Joi.string().required(),
-  secondName: Joi.string().required(),
+  name: Joi.string().min(3).max(20).required(),
+  secondName: Joi.string().min(3).max(20).required(),
   email: Joi.string()
     .pattern(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/)
     .required(),
@@ -12,5 +12,6 @@ const schema = Joi.object({
   birthYear: Joi.date().iso().required(),
   avatar: Joi.any(),
 });
+
 
 export default schema;

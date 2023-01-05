@@ -15,7 +15,7 @@ import { db, storage } from '../../firebaseConfigm';
 import schema from 'utils/validationUser';
 import s from './cartPage.module.scss';
 
-const emailRegexp = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+const emailRegexp = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
 const telRegexp = /(?=.*\+[0-9]{3}\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{4,5}$)/;
 const USER_STORAGE = 'user';
 
@@ -43,8 +43,7 @@ const FormPage = () => {
     );
   };
 
-  const validateForm = e => {
-    e.preventDefault();
+  const validateForm = () => {
 
     setIsErrors({});
 
@@ -73,14 +72,16 @@ const FormPage = () => {
 
     if (validationResult.error || Object.keys(errors).length) {
       toast.error('Не корректно задано поле');
-      return false;
+      return;
     }
 
     return true;
   };
 
   const addUser = async e => {
-    const resultValidate = validateForm(e);
+    e.preventDefault();
+
+    const resultValidate = validateForm();
 
     if (!resultValidate) {
       return;
@@ -95,12 +96,12 @@ const FormPage = () => {
       toast.success(`${user.name} успішно додано`);
       resetForm();
       e.target.reset();
-    } catch (e) {
+    } catch {
       toast.error('Щось пішло не так спробуй ще раз');
     }
   };
 
-  const resetForm = e => {
+  const resetForm = () => {
     setUser(initialValues);
     setFile(null);
     localStorage.removeItem(USER_STORAGE);
@@ -125,7 +126,7 @@ const FormPage = () => {
     }
 
     file && handleUpload();
-  }, [file, errors]);
+  }, [file]);
 
   return (
     <div className={s.wrapper}>
@@ -236,7 +237,13 @@ const FormPage = () => {
               Не обов'язкове поле
             </FormHelperText>
           </Box>
-          <Box sx={{display: 'flex', justifyContent: 'center', minHeight: '45px'}}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              minHeight: '45px',
+            }}
+          >
             <Button
               type="reset"
               value="reset"
@@ -244,9 +251,9 @@ const FormPage = () => {
               fullWidth
               onClick={e => resetForm(e)}
             >
-              збросити
+              скинути
             </Button>
-            <Button type="submit" variant="contained" fullWidth sx={{ml: 2}}>
+            <Button type="submit" variant="contained" fullWidth sx={{ ml: 2 }}>
               надіслати
             </Button>
           </Box>
