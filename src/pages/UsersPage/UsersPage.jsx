@@ -1,26 +1,21 @@
-import {
-  Avatar,
-  Backdrop,
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  CircularProgress,
-  Typography,
-} from '@mui/material';
+import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebaseConfigm';
 import { Container } from '@mui/system';
-import { deepOrange } from '@mui/material/colors';
 import { toast } from 'react-toastify';
+import ButtonAddUser from 'components/ButtonAddUser/ButtonAddUser';
+import User from 'components/User';
+import Modal from 'components/Modal/Modal';
+import FormUser from 'components/FormUser';
 
 const UsersPage = () => {
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       setIsLoading(true);
       const querySnapshot = await getDocs(collection(db, 'users'));
@@ -33,10 +28,16 @@ const UsersPage = () => {
     } catch (error) {
       toast.error(error);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userList]);
+
+  const openModal = () => {
+    setIsOpenModal(true);
   };
 
   useEffect(() => {
     fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!userList.length) {
@@ -55,14 +56,13 @@ const UsersPage = () => {
   }
 
   return (
-    <Container
+    <Box
       sx={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
         height: '100vh',
-        paddingTop: '200px',
       }}
     >
       <Backdrop
@@ -79,73 +79,17 @@ const UsersPage = () => {
           gap: 2,
         }}
       >
-        {userList?.map(({ user, id }, i) => (
-          <Card sx={{ minWidth: 300 }} key={id}>
-            <CardActionArea>
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Avatar
-                    alt={user.name}
-                    src={user.avatar}
-                    sx={{
-                      width: 56,
-                      height: 56,
-                      objectFit: 'cover',
-                      objectPosition: 'center',
-                      marginRight: '10px',
-                      bgcolor: deepOrange[500],
-                    }}
-                  >
-                    {user.name[0]}
-                  </Avatar>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {user.name} {user.secondName}
-                  </Typography>
-                </Box>
-
-                <Box sx={{ display: 'flex' }}>
-                  <Typography
-                    sx={{ mr: 2, fontWeight: '700' }}
-                    variant="body2"
-                    color="text.secondary"
-                  >
-                    Email:
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {user.email}
-                  </Typography>
-                </Box>
-
-                <Box sx={{ display: 'flex' }}>
-                  <Typography
-                    sx={{ mr: 2, fontWeight: '700' }}
-                    variant="body2"
-                    color="text.secondary"
-                  >
-                    День народження:
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {user.birthYear}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex' }}>
-                  <Typography
-                    sx={{ mr: 2, fontWeight: '700' }}
-                    variant="body2"
-                    color="text.secondary"
-                  >
-                    Телефон:
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {user.tel}
-                  </Typography>
-                </Box>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+        {userList?.map(({ user, id }) => (
+          <User key={id} user={user} id={id} />
         ))}
       </Box>
-    </Container>
+      <ButtonAddUser openModal={openModal} />
+      {isOpenModal && (
+        <Modal onClose={() => setIsOpenModal(false)}>
+          <FormUser onClose={() => setIsOpenModal(false)} />
+        </Modal>
+      )}
+    </Box>
   );
 };
 
