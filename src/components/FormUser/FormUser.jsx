@@ -12,7 +12,7 @@ import {
 import { collection, addDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { toast } from 'react-toastify';
-import { db, storage } from '../../firebaseConfigm';
+import { db, storage } from '../../firebaseConfig';
 import schema from 'utils/validationUser';
 import s from './FormUser.module.scss';
 
@@ -137,7 +137,6 @@ const FormPage = ({ onClose }) => {
         justifyContent: 'center',
         flexDirection: 'column',
         height: '100vh',
-        paddingTop: '50px',
       }}
     >
       <Typography
@@ -147,6 +146,7 @@ const FormPage = ({ onClose }) => {
           p: 1,
           pl: 3,
           pr: 3,
+          mb: 2,
           color: 'white',
         }}
       >

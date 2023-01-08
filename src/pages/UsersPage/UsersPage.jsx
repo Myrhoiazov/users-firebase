@@ -1,8 +1,7 @@
 import { Backdrop, Box, CircularProgress, Typography } from '@mui/material';
-
 import { useCallback, useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebaseConfigm';
+import { db } from '../../firebaseConfig';
 import { Container } from '@mui/system';
 import { toast } from 'react-toastify';
 import ButtonAddUser from 'components/ButtonAddUser/ButtonAddUser';

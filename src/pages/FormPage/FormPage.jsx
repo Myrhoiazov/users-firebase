@@ -3,7 +3,7 @@ import FormUser from 'components/FormUser';
 
 const FormPage = () => {
   return (
-    <Box>
+    <Box sx={{ paddingTop: '50px' }}>
       <FormUser />
     </Box>
   );
