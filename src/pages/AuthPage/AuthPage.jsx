@@ -7,6 +7,8 @@ import { Box, Button, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { app } from 'firebaseConfig';
+import { useNavigate } from 'react-router-dom';
+import Confetti from 'components/Confetti/Confetti';
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -45,6 +47,9 @@ const initialValues = {
 
 const AuthPage = () => {
   const [user, setUser] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate();
+
   const auth = getAuth(app);
 
   const handleSubmitForm = async (values, { resetForm }) => {
@@ -55,7 +60,12 @@ const AuthPage = () => {
         values.password
       );
       setUser(response.user);
+      setIsSuccess(true);
       resetForm();
+      setTimeout(() => {
+        setIsSuccess(false);
+        navigate('/', { replace: true });
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
@@ -120,6 +130,7 @@ const AuthPage = () => {
           </Form>
         )}
       </Formik>
+      {isSuccess && <Confetti />}
     </Container>
   );
 };
