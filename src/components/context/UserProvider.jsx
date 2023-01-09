@@ -6,11 +6,11 @@ export const UserProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [userEmail, setUserEmail] = useState('');
 
-  const login = (id, email) => {
-    if (email.length) {
+  const login = email => {
+    if (email) {
       setIsAuth(true);
       setUserEmail(email);
-      localStorage.setItem('isAuth', isAuth);
+      localStorage.setItem('isAuth', 'true');
       return;
     }
 
@@ -24,7 +24,9 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ isAuth, userEmail, login, logout, setIsAuth }}>
+    <UserContext.Provider
+      value={{ isAuth, userEmail, login, logout, setIsAuth }}
+    >
       {children}
     </UserContext.Provider>
   );

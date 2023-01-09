@@ -12,7 +12,7 @@ export const App = () => {
   useEffect(() => {
     const localAuth = localStorage.getItem('isAuth');
 
-    if (localAuth) {
+    if (Boolean(localAuth)) {
       setIsAuth(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

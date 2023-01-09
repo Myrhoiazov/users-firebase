@@ -51,7 +51,7 @@ export const LoginPage = () => {
         values.password
       );
       setUser(response.user);
-      login(1, values.email);
+      login(values.email);
       navigate('/', { replace: true });
       toast.success(`Привіт з у спішним входом`);
       resetForm();
