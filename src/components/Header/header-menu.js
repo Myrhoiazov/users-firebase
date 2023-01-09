@@ -1,16 +1,21 @@
-const headerMenu = [
-  {
-    name: 'Login',
-    to: '/login'
-  },
+export const headerMenu = [
   {
     name: 'Forms',
-    to: '/'
+    to: '/',
   },
   {
     name: 'Users',
-    to: '/users'
-  }
+    to: '/users',
+  },
 ];
 
-export default headerMenu;
+export const loginMenu = [
+  {
+    name: 'Login',
+    to: '/login',
+  },
+  {
+    name: 'Registration',
+    to: '/registration',
+  },
+];

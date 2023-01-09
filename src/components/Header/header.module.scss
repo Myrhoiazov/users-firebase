@@ -3,10 +3,14 @@
   padding: 10px 0;
 }
 
-.link{
+.link {
   color: white;
   text-decoration: none;
   margin-right: 20px;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: rgb(0, 0, 0);
+  }
 }
-
-

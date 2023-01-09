@@ -1,28 +1,20 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import { Container } from '@mui/system';
 import { Box, Button, Typography } from '@mui/material';
 import styled from 'styled-components';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { app } from 'firebaseConfig';
+import UserContext from 'components/context/UserProvider';
 import { useNavigate } from 'react-router-dom';
-import Confetti from 'components/Confetti/Confetti';
+import { toast } from 'react-toastify';
 
-const SignupSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Please enter your full name'),
+const loginSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
     .required('Please enter your email'),
-  password: Yup.string().required().min(6, 'Please enter your password'),
-  confirmPassword: Yup.string().oneOf(
-    [Yup.ref('password'), null],
-    'Passwords must match'
-  ),
+  password: Yup.string().required('Please enter your password'),
 });
 
 const Input = styled(Field)`
@@ -39,33 +31,30 @@ const MyError = styled.div`
 `;
 
 const initialValues = {
-  name: '',
   email: '',
   password: '',
-  confirmPassword: '',
 };
 
-const AuthPage = () => {
+export const LoginPage = () => {
+  // eslint-disable-next-line no-unused-vars
   const [user, setUser] = useState(null);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const navigate = useNavigate();
+  const { login } = useContext(UserContext);
 
   const auth = getAuth(app);
+  const navigate = useNavigate();
 
   const handleSubmitForm = async (values, { resetForm }) => {
     try {
-      const response = await createUserWithEmailAndPassword(
+      const response = await signInWithEmailAndPassword(
         auth,
         values.email,
         values.password
       );
       setUser(response.user);
-      setIsSuccess(true);
+      login(1, values.email);
+      navigate('/', { replace: true });
+      toast.success(`Привіт з у спішним входом`);
       resetForm();
-      setTimeout(() => {
-        setIsSuccess(false);
-        navigate('/', { replace: true });
-      }, 3000);
     } catch (error) {
       console.log(error);
     }
@@ -83,22 +72,15 @@ const AuthPage = () => {
       }}
     >
       <Typography sx={{ mb: 2 }} variant="h4">
-        Registration
+        Log In
       </Typography>
       <Formik
         initialValues={initialValues}
-        validationSchema={SignupSchema}
+        validationSchema={loginSchema}
         onSubmit={handleSubmitForm}
       >
         {({ errors, touched }) => (
           <Form autoComplete="off">
-            <Box sx={{ marginBottom: '20px' }}>
-              <Input type="name" name="name" placeholder="Ім'я" />
-              {errors.name && touched.name ? (
-                <MyError>{errors.name}</MyError>
-              ) : null}
-            </Box>
-
             <Box sx={{ marginBottom: '20px' }}>
               <Input type="email" name="email" placeholder="Email" />
               {errors.email && touched.email ? (
@@ -113,26 +95,14 @@ const AuthPage = () => {
               ) : null}
             </Box>
 
-            <Box sx={{ marginBottom: '20px' }}>
-              <Input
-                type="password"
-                name="confirmPassword"
-                placeholder="Пароль"
-              />
-              {errors.confirmPassword && touched.confirmPassword ? (
-                <MyError>{errors.confirmPassword}</MyError>
-              ) : null}
-            </Box>
-
             <Button type="submit" fullWidth variant="contained">
               Submit
             </Button>
           </Form>
         )}
       </Formik>
-      {isSuccess && <Confetti />}
     </Container>
   );
 };
 
-export default AuthPage;
+export default LoginPage;
