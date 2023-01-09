@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/218.7b18340a.chunk.css","mappings":"AAAA,uBACE,sBAGA,cAFA,gBAGA,aAFA,UAEA,CAGF,uBACE","sources":["components/FormUser/FormUser.module.scss"],"sourcesContent":[".form {\n  box-sizing: border-box;\n  max-width: 500px;\n  width: 100%;\n  margin: 0 auto;\n  padding: 10px;\n}\n\n.error {\n  color: red;\n}\n"],"names":[],"sourceRoot":""}
