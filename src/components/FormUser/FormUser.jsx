@@ -18,7 +18,7 @@ import s from './FormUser.module.scss';
 
 const emailRegexp = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
 const telRegexp = /(?=.*\+[0-9]{3}\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{4,5}$)/;
-const USER_STORAGE = 'user';
+const USER_STORAGE = 'userData';
 
 const initialValues = {
   name: '',

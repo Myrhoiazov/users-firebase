@@ -7,12 +7,13 @@ import UserContext from 'components/context/UserProvider';
 import { useContext, useEffect } from 'react';
 
 export const App = () => {
-  const { setIsAuth } = useContext(UserContext);
+  const { setUserEmail, setIsAuth } = useContext(UserContext);
 
   useEffect(() => {
-    const localAuth = localStorage.getItem('isAuth');
+    const userEmail = localStorage.getItem('user');
 
-    if (Boolean(localAuth)) {
+    if (userEmail) {
+      setUserEmail(userEmail);
       setIsAuth(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
