@@ -5,20 +5,25 @@ import { headerMenu, loginMenu } from './header-menu';
 import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 import s from './header.module.scss';
 import UserContext from 'components/context/UserProvider';
+import UserMenu from 'components/UserMenu';
 
 export const Header = () => {
   const { isAuth } = useContext(UserContext);
 
   const authLinks = loginMenu.map(({ name, to }) => (
-    <NavLink className={s.link} key={name} to={to} end>
-      {name}
-    </NavLink>
+    <>
+      <NavLink className={s.link} key={name} to={to} end>
+        {name}
+      </NavLink>
+    </>
   ));
 
   const elements = headerMenu.map(({ name, to }) => (
-    <NavLink className={s.link} key={name} to={to} end>
-      {name}
-    </NavLink>
+    <>
+      <NavLink className={s.link} key={name} to={to} end>
+        {name}
+      </NavLink>
+    </>
   ));
 
   return (
@@ -29,6 +34,7 @@ export const Header = () => {
             <Typography variant="h4">Test App</Typography>
           </Link>
           <Box sx={{ marginLeft: 'auto' }}>{isAuth ? elements : authLinks}</Box>
+          {isAuth && <UserMenu />}
         </Toolbar>
       </AppBar>
     </>
