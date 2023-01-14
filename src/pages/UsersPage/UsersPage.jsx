@@ -39,7 +39,7 @@ const UsersPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!userList.length) {
+  if (userList.length === 0) {
     return (
       <Container
         sx={{

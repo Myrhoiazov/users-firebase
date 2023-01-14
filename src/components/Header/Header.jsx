@@ -10,7 +10,7 @@ import UserMenu from 'components/UserMenu';
 export const Header = () => {
   const { isAuth } = useContext(UserContext);
 
-  const authLinks = loginMenu.map(({ name, to }) => (
+  const authLinks = loginMenu.map(({ name, to }, index) => (
     <>
       <NavLink className={s.link} key={name} to={to} end>
         {name}
@@ -18,9 +18,9 @@ export const Header = () => {
     </>
   ));
 
-  const elements = headerMenu.map(({ name, to }) => (
+  const elements = headerMenu.map(({ name, to }, index) => (
     <>
-      <NavLink className={s.link} key={name} to={to} end>
+      <NavLink className={s.link} key={index} to={to} end>
         {name}
       </NavLink>
     </>

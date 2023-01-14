@@ -6,7 +6,6 @@ const PasswordIndicator = ({ password }) => {
   const result = zxcvbn(password);
 
   const num = (result.score * 100) / 4;
-  console.log('num: ', num);
 
   const progressColor = () => {
     switch (result.score) {

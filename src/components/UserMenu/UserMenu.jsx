@@ -10,8 +10,7 @@ const UserMenu = () => {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Avatar
-        alt={userEmail[0]}
-        src={userEmail}
+        src={userEmail ?? null}
         sx={{
           width: 36,
           height: 36,
