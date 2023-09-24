@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/users-firebase/static/css/main.fcc35f1b.css",
-    "main.js": "/users-firebase/static/js/main.83d3ad4c.js",
+    "main.js": "/users-firebase/static/js/main.d2c7ecf0.js",
     "static/css/218.7b18340a.chunk.css": "/users-firebase/static/css/218.7b18340a.chunk.css",
     "static/js/218.a7de225e.chunk.js": "/users-firebase/static/js/218.a7de225e.chunk.js",
     "static/css/635.ddcf4a0d.chunk.css": "/users-firebase/static/css/635.ddcf4a0d.chunk.css",
@@ -10,12 +10,12 @@
     "static/js/615.ffd2d917.chunk.js": "/users-firebase/static/js/615.ffd2d917.chunk.js",
     "static/js/912.d726eb1e.chunk.js": "/users-firebase/static/js/912.d726eb1e.chunk.js",
     "static/js/135.1f401222.chunk.js": "/users-firebase/static/js/135.1f401222.chunk.js",
-    "static/js/540.4b8c72fd.chunk.js": "/users-firebase/static/js/540.4b8c72fd.chunk.js",
+    "static/js/540.16c7ba30.chunk.js": "/users-firebase/static/js/540.16c7ba30.chunk.js",
     "static/js/761.f16deefd.chunk.js": "/users-firebase/static/js/761.f16deefd.chunk.js",
     "index.html": "/users-firebase/index.html",
     "static/media/plus.svg": "/users-firebase/static/media/plus.6194a661e88e1e5113d2.svg",
     "main.fcc35f1b.css.map": "/users-firebase/static/css/main.fcc35f1b.css.map",
-    "main.83d3ad4c.js.map": "/users-firebase/static/js/main.83d3ad4c.js.map",
+    "main.d2c7ecf0.js.map": "/users-firebase/static/js/main.d2c7ecf0.js.map",
     "218.7b18340a.chunk.css.map": "/users-firebase/static/css/218.7b18340a.chunk.css.map",
     "218.a7de225e.chunk.js.map": "/users-firebase/static/js/218.a7de225e.chunk.js.map",
     "635.ddcf4a0d.chunk.css.map": "/users-firebase/static/css/635.ddcf4a0d.chunk.css.map",
@@ -24,11 +24,11 @@
     "615.ffd2d917.chunk.js.map": "/users-firebase/static/js/615.ffd2d917.chunk.js.map",
     "912.d726eb1e.chunk.js.map": "/users-firebase/static/js/912.d726eb1e.chunk.js.map",
     "135.1f401222.chunk.js.map": "/users-firebase/static/js/135.1f401222.chunk.js.map",
-    "540.4b8c72fd.chunk.js.map": "/users-firebase/static/js/540.4b8c72fd.chunk.js.map",
+    "540.16c7ba30.chunk.js.map": "/users-firebase/static/js/540.16c7ba30.chunk.js.map",
     "761.f16deefd.chunk.js.map": "/users-firebase/static/js/761.f16deefd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.fcc35f1b.css",
-    "static/js/main.83d3ad4c.js"
+    "static/js/main.d2c7ecf0.js"
   ]
 }
